@@ -3,806 +3,391 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nulls Brawl – How This Private Server Changed Mobile Gaming</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Brawl Stars</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0b0f;
-    --surface: #111318;
-    --surface2: #1a1d25;
-    --accent: #f7c948;
-    --accent2: #ff5e3a;
-    --accent3: #3af7c9;
-    --text: #e8e9ef;
-    --muted: #7a7d8e;
-    --border: rgba(247,201,72,0.15);
-  }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+  :root {
+    --yellow: #FFD000;
+    --dark: #1a1a2e;
+    --mid: #2d2d44;
+    --accent: #FF4C5E;
+    --blue: #3B82F6;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --light: #f9f9f9;
+  }
   html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: #ffffff; color: var(--text); overflow-x: hidden; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 17px;
-    line-height: 1.75;
-    overflow-x: hidden;
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #f0f0f0;
   }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; color: var(--text); }
+  .nav-logo span { color: var(--yellow); }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em; text-decoration: none; color: var(--muted); text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { background: var(--yellow); color: var(--text); padding: 0.55rem 1.4rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: transform 0.15s; }
+  .nav-cta:hover { transform: translateY(-1px); }
 
-  /* ── NOISE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.35;
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 8rem 3rem 4rem; max-width: 1200px; margin: 0 auto; gap: 4rem; }
+  .hero-left { animation: fadeUp 0.8s ease both; }
+  .hero-tag { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); border: 1.5px solid var(--accent); padding: 0.3rem 0.8rem; border-radius: 2px; margin-bottom: 1.5rem; }
+  .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 7vw, 6rem); line-height: 0.95; letter-spacing: 2px; margin-bottom: 1.5rem; color: var(--text); }
+  .hero h1 .hl { color: var(--yellow); position: relative; display: inline-block; }
+  .hero h1 .hl::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: var(--yellow); z-index: -1; opacity: 0.4; border-radius: 2px; }
+  .hero-desc { font-size: 1.05rem; line-height: 1.7; color: var(--muted); max-width: 440px; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+  .btn-secondary { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; }
+  .btn-secondary::after { content: '→'; transition: transform 0.2s; }
+  .btn-secondary:hover::after { transform: translateX(4px); }
+
+  /* HERO RIGHT */
+  .hero-right { display: flex; justify-content: center; align-items: center; animation: fadeUp 0.8s 0.15s ease both; }
+  .hero-card { width: 100%; max-width: 420px; background: var(--light); border-radius: 20px; overflow: hidden; border: 1px solid #e8e8e8; box-shadow: 0 40px 80px rgba(0,0,0,0.08); }
+  .hero-card-header { background: var(--dark); padding: 2rem; display: flex; align-items: center; justify-content: space-between; }
+  .hero-card-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: #fff; letter-spacing: 2px; }
+  .live-badge { background: var(--accent); color: #fff; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 20px; display: flex; align-items: center; gap: 0.3rem; }
+  .live-dot { width: 5px; height: 5px; background: #fff; border-radius: 50%; animation: pulse 1.2s infinite; }
+  .hero-card-body { padding: 1.5rem 2rem 2rem; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--text); line-height: 1; }
+  .stat-num span { color: var(--yellow); }
+  .stat-label { font-size: 0.72rem; font-weight: 500; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.2rem; }
+  .mode-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .mode-item { display: flex; align-items: center; justify-content: space-between; background: #fff; border-radius: 8px; padding: 0.75rem 1rem; border: 1px solid #ebebeb; }
+  .mode-name { font-size: 0.82rem; font-weight: 600; }
+  .mode-tag { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 3px; }
+  .tag-hot { background: #FFE5E8; color: var(--accent); }
+  .tag-live { background: #E8F0FF; color: var(--blue); }
+  .tag-new { background: #FEFCE8; color: #CA8A04; }
+
+  /* WHAT IS BRAWL STARS */
+  .what-section {
+    max-width: 1200px; margin: 0 auto 5rem; padding: 0 3rem;
   }
-
-  /* ── HERO ── */
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 0 clamp(1.5rem, 6vw, 7rem) clamp(3rem, 6vw, 5rem);
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 70% 20%, rgba(247,201,72,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 10% 80%, rgba(255,94,58,0.1) 0%, transparent 55%),
-      radial-gradient(ellipse 50% 50% at 90% 90%, rgba(58,247,201,0.07) 0%, transparent 50%),
-      var(--bg);
-  }
-
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(247,201,72,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(247,201,72,0.04) 1px, transparent 1px);
-    background-size: 80px 80px;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
-  }
-
-  .hero-tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    animation: fadeUp 0.8s ease both;
-  }
-
-  .hero-tag::before {
-    content: '';
-    display: inline-block;
-    width: 2rem;
-    height: 1px;
-    background: var(--accent);
-  }
-
-  .hero h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3.5rem, 10vw, 9rem);
-    line-height: 0.92;
-    letter-spacing: 0.02em;
-    max-width: 14ch;
-    animation: fadeUp 0.9s 0.1s ease both;
-  }
-
-  .hero h1 .highlight {
-    color: var(--accent);
-    position: relative;
-    display: inline-block;
-  }
-
-  .hero h1 .highlight::after {
-    content: '';
-    position: absolute;
-    bottom: 0.05em;
-    left: 0;
-    right: 0;
-    height: 0.06em;
-    background: var(--accent2);
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: lineReveal 0.6s 1.2s cubic-bezier(0.77,0,0.175,1) forwards;
-  }
-
-  @keyframes lineReveal { to { transform: scaleX(1); } }
-
-  .hero-meta {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 2.5rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--muted);
-    animation: fadeUp 1s 0.3s ease both;
-  }
-
-  .hero-meta span { display: flex; align-items: center; gap: 0.4rem; }
-
-  .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); display: inline-block; }
-
-  .scroll-hint {
-    position: absolute;
-    bottom: 2.5rem;
-    right: clamp(1.5rem, 6vw, 7rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    text-transform: uppercase;
-    animation: fadeUp 1s 0.6s ease both;
-  }
-
-  .scroll-line {
-    width: 1px;
-    height: 3rem;
-    background: linear-gradient(to bottom, var(--accent), transparent);
-    animation: scrollPulse 2s ease-in-out infinite;
-  }
-
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.4; transform: scaleY(1); }
-    50% { opacity: 1; transform: scaleY(1.1); }
-  }
-
-  /* ── LAYOUT ── */
-  .container {
-    max-width: 820px;
-    margin: 0 auto;
-    padding: 0 clamp(1.5rem, 5vw, 3rem);
-  }
-
-  .article-body {
-    padding: clamp(4rem, 8vw, 7rem) 0;
-  }
-
-  /* ── INTRO LEAD ── */
-  .lead {
-    font-size: clamp(1.15rem, 2.5vw, 1.35rem);
-    font-weight: 300;
-    color: #c5c7d4;
-    line-height: 1.65;
-    border-left: 3px solid var(--accent);
-    padding-left: 1.5rem;
-    margin-bottom: 4rem;
-    font-style: italic;
-  }
-
-  /* ── SECTIONS ── */
-  .section {
-    margin-bottom: 4rem;
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-
-  .section.visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .section-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    flex-shrink: 0;
-    padding-top: 0.2rem;
-  }
-
-  h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(1.9rem, 4vw, 2.8rem);
-    letter-spacing: 0.04em;
-    line-height: 1.05;
-    color: var(--text);
-  }
-
-  p {
-    color: #c0c2cf;
-    margin-bottom: 1.1rem;
-  }
-
-  p strong {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  /* ── CALLOUT ── */
-  .callout {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 2px;
-    padding: 1.5rem 2rem;
-    margin: 2rem 0;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .callout::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, var(--accent), transparent);
-  }
-
-  .callout p {
-    margin: 0;
-    font-size: 1.05rem;
-    color: #d0d2df;
-    font-style: italic;
-  }
-
-  /* ── FEATURE LIST ── */
-  .feature-grid {
+  .what-inner {
+    background: var(--light);
+    border-radius: 24px;
+    border: 1px solid #ebebeb;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin: 2rem 0;
-  }
-
-  .feature-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 1.25rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-
-  .feature-item:hover {
-    border-color: rgba(247,201,72,0.4);
-    transform: translateY(-2px);
-  }
-
-  .feature-icon {
-    font-size: 1.4rem;
-    flex-shrink: 0;
-  }
-
-  .feature-label {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text);
-  }
-
-  /* ── COMPARISON TABLE ── */
-  .compare-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-    font-size: 0.9rem;
-  }
-
-  .compare-table th {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    padding: 0.75rem 1.25rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .compare-table td {
-    padding: 0.85rem 1.25rem;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    color: #b8bad0;
-    vertical-align: top;
-  }
-
-  .compare-table tr:last-child td { border-bottom: none; }
-
-  .compare-table .label {
-    color: var(--text);
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  .badge {
-    display: inline-block;
-    padding: 0.15em 0.6em;
-    border-radius: 2px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.05em;
-  }
-
-  .badge-yes { background: rgba(58,247,201,0.12); color: var(--accent3); }
-  .badge-no  { background: rgba(255,94,58,0.12);  color: var(--accent2); }
-  .badge-ltd { background: rgba(247,201,72,0.12); color: var(--accent);  }
-
-  /* ── STAT CARDS ── */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin: 2.5rem 0;
-    border-radius: 3px;
+    grid-template-columns: 1fr 1fr;
     overflow: hidden;
   }
-
-  .stat-card {
-    background: var(--surface);
-    padding: 1.75rem 1.5rem;
-    text-align: center;
+  .what-left {
+    padding: 3.5rem;
+    border-right: 1px solid #ebebeb;
   }
-
-  .stat-number {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.8rem;
-    color: var(--accent);
-    letter-spacing: 0.04em;
-    line-height: 1;
+  .what-right {
+    padding: 3.5rem;
+    display: flex; flex-direction: column; gap: 1.2rem;
   }
-
-  .stat-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.63rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 0.35rem;
+  .what-left .section-label { margin-bottom: 0.8rem; }
+  .what-left .section-heading { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: 1.5px; line-height: 1; margin-bottom: 1.5rem; }
+  .what-left p { font-size: 0.95rem; line-height: 1.8; color: var(--muted); margin-bottom: 1rem; }
+  .what-left p:last-child { margin-bottom: 0; }
+  .nulls-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--dark); color: var(--yellow);
+    padding: 0.6rem 1.2rem; border-radius: 6px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
+    text-decoration: none; text-transform: uppercase;
+    transition: transform 0.15s, background 0.2s;
+    margin-top: 0.5rem;
   }
-
-  /* ── DIVIDER ── */
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin: 3.5rem 0;
-    color: var(--muted);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
+  .nulls-link:hover { transform: translateY(-2px); background: #000; }
+  .nulls-link::after { content: '↗'; font-size: 0.9rem; }
+  .quick-fact {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #ebebeb;
+    padding: 1.2rem 1.5rem;
+    display: flex; align-items: flex-start; gap: 1rem;
   }
+  .fact-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .fact-title { font-weight: 700; font-size: 0.88rem; margin-bottom: 0.25rem; }
+  .fact-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
 
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  /* DIVIDER */
+  .section-divider { max-width: 1200px; margin: 0 auto; padding: 0 3rem; display: flex; align-items: center; gap: 1.5rem; }
+  .divider-line { flex: 1; height: 1px; background: #ebebeb; }
+  .divider-text { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #ccc; }
 
-  /* ── CTA BANNER ── */
-  .cta-banner {
-    background: linear-gradient(135deg, var(--surface2) 0%, #1a1f2e 100%);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 3rem 2.5rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    margin-top: 5rem;
-  }
+  /* WHY SECTION */
+  .why-section { max-width: 1200px; margin: 5rem auto; padding: 0 3rem; }
+  .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.8rem; }
+  .section-heading { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 3.8rem); letter-spacing: 1.5px; line-height: 1; margin-bottom: 3.5rem; }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; border: 1.5px solid #ebebeb; border-radius: 12px; overflow: hidden; }
+  .feature-card { padding: 2.5rem 2rem; background: #fff; transition: background 0.2s; }
+  .feature-card:hover { background: var(--light); }
+  .feature-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1.2rem; }
+  .ic-yellow { background: #FFF9E0; }
+  .ic-red { background: #FFE8EA; }
+  .ic-blue { background: #E8F0FF; }
+  .ic-green { background: #E8F9F0; }
+  .ic-purple { background: #F0E8FF; }
+  .ic-orange { background: #FFF3E8; }
+  .feature-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .feature-desc { font-size: 0.875rem; line-height: 1.65; color: var(--muted); }
 
-  .cta-banner::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
-  }
+  /* BRAWLERS */
+  .brawlers-section { background: var(--dark); padding: 5rem 0; margin: 5rem 0; overflow: hidden; }
+  .brawlers-inner { max-width: 1200px; margin: 0 auto; padding: 0 3rem; }
+  .brawlers-inner .section-label { color: var(--yellow); }
+  .brawlers-inner .section-heading { color: #fff; }
+  .brawler-cards { display: flex; gap: 1.2rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: none; }
+  .brawler-cards::-webkit-scrollbar { display: none; }
+  .brawler-card { flex: 0 0 200px; background: var(--mid); border-radius: 14px; padding: 1.5rem 1.2rem; border: 1px solid rgba(255,255,255,0.06); text-align: center; transition: transform 0.2s, border-color 0.2s; }
+  .brawler-card:hover { transform: translateY(-4px); border-color: var(--yellow); }
+  .brawler-emoji { font-size: 3rem; margin-bottom: 0.8rem; display: block; }
+  .brawler-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: #fff; letter-spacing: 1.5px; margin-bottom: 0.3rem; }
+  .brawler-type { display: inline-block; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 3px; margin-bottom: 0.8rem; }
+  .type-tank { background: rgba(59,130,246,0.2); color: #93C5FD; }
+  .type-sniper { background: rgba(34,197,94,0.2); color: #86EFAC; }
+  .type-assassin { background: rgba(255,76,94,0.2); color: #FCA5A5; }
+  .type-support { background: rgba(168,85,247,0.2); color: #D8B4FE; }
+  .type-fighter { background: rgba(251,191,36,0.2); color: #FDE68A; }
+  .brawler-bar { height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+  .brawler-fill { height: 100%; border-radius: 2px; background: var(--yellow); }
 
-  .cta-glow {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    height: 200px;
-    background: radial-gradient(ellipse, rgba(247,201,72,0.07), transparent 70%);
-    pointer-events: none;
-  }
+  /* MODES */
+  .modes-section { max-width: 1200px; margin: 5rem auto; padding: 0 3rem; }
+  .modes-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 1.2rem; }
+  .mode-card { border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; min-height: 220px; display: flex; flex-direction: column; justify-content: flex-end; border: 1px solid #ebebeb; transition: transform 0.2s, box-shadow 0.2s; }
+  .mode-card:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+  .mode-card.featured { background: var(--dark); min-height: 280px; border-color: transparent; }
+  .mode-card.gem { background: linear-gradient(135deg, #1a7ad4 0%, #0f4e8a 100%); border-color: transparent; }
+  .mode-card.ball { background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); border-color: transparent; }
+  .mode-card-icon { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 3rem; opacity: 0.5; }
+  .mode-card-tag { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 3px; margin-bottom: 0.5rem; width: fit-content; }
+  .tag-white { background: rgba(255,255,255,0.2); color: #fff; }
+  .tag-dark { background: rgba(0,0,0,0.08); color: var(--text); }
+  .mode-card-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; line-height: 1; }
+  .mode-card.featured .mode-card-name, .mode-card.gem .mode-card-name, .mode-card.ball .mode-card-name { color: #fff; }
+  .mode-card-desc { font-size: 0.8rem; line-height: 1.5; margin-top: 0.4rem; }
+  .mode-card.featured .mode-card-desc, .mode-card.gem .mode-card-desc, .mode-card.ball .mode-card-desc { color: rgba(255,255,255,0.7); }
+  .mode-card.plain .mode-card-desc { color: var(--muted); }
+  .mode-card.plain .mode-card-name { color: var(--text); }
 
-  .cta-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.75rem;
-  }
+  /* STATS BAR */
+  .stats-bar { background: var(--yellow); padding: 2.5rem 3rem; display: flex; justify-content: center; gap: 6rem; margin: 5rem 0; }
+  .stat-block { text-align: center; }
+  .stat-block .num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--text); letter-spacing: 1px; }
+  .stat-block .lbl { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(26,26,46,0.6); margin-top: 0.2rem; }
 
-  .cta-banner h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    letter-spacing: 0.06em;
-    margin-bottom: 1.5rem;
-    color: var(--text);
-  }
+  /* ESPORTS */
+  .esports-section { max-width: 1200px; margin: 5rem auto; padding: 0 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .esports-section .section-heading { margin-bottom: 1.2rem; }
+  .esports-desc { font-size: 1rem; line-height: 1.75; color: var(--muted); margin-bottom: 2rem; }
+  .esports-pills { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .pill { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; padding: 0.4rem 1rem; border-radius: 20px; border: 1.5px solid #e0e0e0; color: var(--muted); text-transform: uppercase; transition: border-color 0.2s, color 0.2s; }
+  .pill:hover { border-color: var(--text); color: var(--text); }
+  .esports-visual { background: var(--light); border-radius: 20px; padding: 2.5rem; border: 1px solid #ebebeb; }
+  .trophy-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .trophy-icon { font-size: 2rem; }
+  .trophy-text .t1 { font-weight: 700; font-size: 0.9rem; }
+  .trophy-text .t2 { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+  .rank-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .rank-item { display: flex; align-items: center; gap: 0.8rem; background: #fff; border-radius: 8px; padding: 0.7rem 1rem; border: 1px solid #ebebeb; }
+  .rank-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--muted); width: 20px; }
+  .rank-name { font-weight: 600; font-size: 0.85rem; flex: 1; }
+  .rank-score { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--yellow); background: var(--dark); padding: 0.15rem 0.5rem; border-radius: 4px; }
 
-  .cta-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: var(--accent);
-    color: #0a0b0f;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 0.95rem 2.25rem;
-    border-radius: 2px;
-    transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
-    position: relative;
-  }
+  /* FOOTER */
+  footer { border-top: 1px solid #ebebeb; padding: 3rem; display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; }
+  .footer-logo span { color: var(--yellow); }
+  .footer-text { font-size: 0.78rem; color: var(--muted); }
+  .footer-tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 
-  .cta-btn:hover {
-    background: #ffe066;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(247,201,72,0.3);
-  }
-
-  .cta-btn svg { width: 16px; height: 16px; }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 2rem clamp(1.5rem, 6vw, 7rem);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .footer-brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-  }
-
-  .footer-note {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-
-  /* ── INLINE LINK ── */
-  a.inline-link {
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(247,201,72,0.35);
-    transition: border-color 0.2s, color 0.2s;
-  }
-
-  a.inline-link:hover {
-    color: #ffe066;
-    border-color: #ffe066;
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: none; }
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .stats-row { grid-template-columns: 1fr; }
-    .hero-meta { flex-wrap: wrap; gap: 1rem; }
-    footer { flex-direction: column; align-items: flex-start; }
-  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">BRAWL<span>★</span>STARS</div>
+  <div class="nav-links">
+    <a href="#">Brawlers</a>
+    <a href="#">Modes</a>
+    <a href="#">Esports</a>
+    <a href="#">Updates</a>
+  </div>
+  <a href="#" class="nav-cta">Play Free</a>
+</nav>
+
 <!-- HERO -->
-<header class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-
-  <div class="hero-tag">Mobile Gaming · Private Servers · 2026</div>
-
-  <h1>
-    <span class="highlight">Nulls<br>Brawl</span><br>
-    Changed<br>Mobile Gaming
-  </h1>
-
-  <div class="hero-meta">
-    <span><span class="dot"></span> Deep Dive</span>
-    <span><span class="dot"></span> 8 min read</span>
-    <span><span class="dot"></span> Community Analysis</span>
+<section style="max-width:1200px;margin:0 auto;">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">🔥 Season Live Now</div>
+      <h1>Fast-Paced<br><span class="hl">Battle</span><br>Action</h1>
+      <p class="hero-desc">Millions of players. Dozens of brawlers. One goal — be the last one standing. Jump into quick, addictive battles that never get old.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-secondary">Watch Gameplay</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="hero-card-title">Live Arena</div>
+          <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+        </div>
+        <div class="hero-card-body">
+          <div class="stat-grid">
+            <div class="stat-item">
+              <div class="stat-num">50<span>M+</span></div>
+              <div class="stat-label">Active Players</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">80<span>+</span></div>
+              <div class="stat-label">Brawlers</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">15<span>+</span></div>
+              <div class="stat-label">Game Modes</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">3<span>MIN</span></div>
+              <div class="stat-label">Avg Match Time</div>
+            </div>
+          </div>
+          <div class="mode-list">
+            <div class="mode-item"><span class="mode-name">🔵 Gem Grab</span><span class="mode-tag tag-hot">Hot</span></div>
+            <div class="mode-item"><span class="mode-name">🏆 Showdown</span><span class="mode-tag tag-live">Live</span></div>
+            <div class="mode-item"><span class="mode-name">⚽ Brawl Ball</span><span class="mode-tag tag-new">New Map</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="scroll-hint">
-    <div class="scroll-line"></div>
-    Scroll
+<!-- WHAT IS BRAWL STARS -->
+<section class="what-section">
+  <div class="what-inner">
+    <div class="what-left">
+      <div class="section-label">The Game</div>
+      <div class="section-heading">What Is<br>Brawl Stars?</div>
+      <p>Brawl Stars is a fast-paced multiplayer battle game developed by <strong>Supercell</strong> — the studio behind Clash of Clans and Clash Royale. Launched in 2017, it has grown into one of the most popular mobile games worldwide, with tens of millions of active players across all platforms.</p>
+      <p>Players choose from a roster of unique characters called <strong>Brawlers</strong>, each with their own attacks, special abilities, and playstyles. Matches are designed to be quick — most last only a few minutes — making it ideal for mobile gaming sessions on the go.</p>
+      <p>Whether you enjoy casual play or competitive ranked battles, Brawl Stars delivers an experience that stays fresh thanks to regular updates, new brawlers, seasonal events, and a thriving esports scene.</p>
+      <p>Players also explore private server experiences like <strong>Nulls Brawl Mod</strong> to test unlimited resources, unlocked brawlers, and experimental features not available in the official version.</p>
+    </div>
+    <div class="what-right">
+      <div class="quick-fact">
+        <div class="fact-icon">🎮</div>
+        <div>
+          <div class="fact-title">Developed by Supercell</div>
+          <div class="fact-desc">The Finnish studio behind some of the world's biggest mobile games, known for polished gameplay and frequent updates.</div>
+        </div>
+      </div>
+      <div class="quick-fact">
+        <div class="fact-icon">⚡</div>
+        <div>
+          <div class="fact-title">3-Minute Matches</div>
+          <div class="fact-desc">Every battle is designed for fast play — jump in, fight hard, and jump out. No long sessions required.</div>
+        </div>
+      </div>
+      <div class="quick-fact">
+        <div class="fact-icon">🌍</div>
+        <div>
+          <div class="fact-title">50M+ Monthly Players</div>
+          <div class="fact-desc">One of the most active mobile gaming communities in the world, with players from every continent competing daily.</div>
+        </div>
+      </div>
+      <div class="quick-fact">
+        <div class="fact-icon">🔓</div>
+        <div>
+          <div class="fact-title">Free to Play</div>
+          <div class="fact-desc">Available on iOS and Android at no cost. All brawlers can be unlocked through regular gameplay without spending money.</div>
+        </div>
+      </div>
+      <div class="quick-fact">
+        <div class="fact-icon">🧪</div>
+        <div>
+          <div class="fact-title">Nulls Brawl Mod</div>
+          <div class="fact-desc">A popular private server experience offering unlimited resources and unlocked brawlers for practice and exploration. <a href="https://nulsbrawl.fr/" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600;text-decoration:none;">Visit nulsbrawl.fr ↗</a></div>
+        </div>
+      </div>
+    </div>
   </div>
-</header>
+</section>
 
-<!-- ARTICLE -->
-<main class="article-body">
-  <div class="container">
+<div class="section-divider">
+  <div class="divider-line"></div>
+  <div class="divider-text">Why Players Love It</div>
+  <div class="divider-line"></div>
+</div>
 
-    <p class="lead">
-      Fans of Brawl Stars are constantly searching for faster progression, unlocked features, and more freedom inside the game. That is exactly where <a href="https://nulsbrawl.fr/" class="inline-link">Nulls Brawl</a> became a game changer for the community.
-    </p>
-
-    <!-- STATS -->
-    <div class="stats-row section">
-      <div class="stat-card">
-        <div class="stat-number">∞</div>
-        <div class="stat-label">Gems Available</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">100%</div>
-        <div class="stat-label">Brawlers Unlocked</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">0€</div>
-        <div class="stat-label">Cost to Play</div>
-      </div>
+<!-- WHY SECTION -->
+<section class="why-section">
+  <div class="section-label">The Experience</div>
+  <div class="section-heading">Built Different,<br>From The Ground Up</div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon ic-yellow">⚡</div>
+      <div class="feature-title">Instant Action</div>
+      <div class="feature-desc">Matches wrap up in minutes — perfect for mobile. Jump in, brawl hard, get out. No filler, no fluff.</div>
     </div>
-
-    <!-- WHAT IS -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">01 —</span>
-        <h2>What is Nulls Brawl?</h2>
-      </div>
-      <p>
-        <a href="https://nulsbrawl.fr/" class="inline-link">Nulls Brawl</a> is a private server version inspired by the original Brawl Stars game. It gives players access to premium content that normally takes months to unlock in the official version. Instead of grinding endlessly for coins and gems, users can instantly explore every part of the game.
-      </p>
-      <p>
-        The biggest attraction of <strong>Nulls Brawl APK</strong> is freedom. Players can test legendary brawlers, customize skins, and experiment with different gameplay styles without spending real money. This relaxed and open environment is one reason why the game has become incredibly popular among Android gamers.
-      </p>
-
-      <div class="callout">
-        <p>"Instead of grinding endlessly for coins and gems, users can instantly explore every part of the game — with every brawler available from day one."</p>
-      </div>
+    <div class="feature-card">
+      <div class="feature-icon ic-red">🎯</div>
+      <div class="feature-title">Skill Over Stats</div>
+      <div class="feature-desc">Map awareness, timing, and team combos matter more than raw power. Outplay your way to victory.</div>
     </div>
-
-    <div class="divider">Rise to Fame</div>
-
-    <!-- WHY FAMOUS -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">02 —</span>
-        <h2>Why Nulls Brawl Became So Famous</h2>
-      </div>
-      <p>
-        The success of <a href="https://nulsbrawl.fr/" class="inline-link">Nulls Brawl</a> did not happen overnight. It became famous because it solved a problem that many mobile gamers were already facing. In competitive games, players often feel limited by slow progression systems. Unlocking characters or premium skins in the official version requires patience, grinding, or money.
-      </p>
-      <p>
-        When players first entered the private server and saw unlimited resources available instantly, it created excitement across gaming communities. People started sharing gameplay videos, update leaks, and tutorials on YouTube, TikTok, and Discord servers. Slowly, the name "Nulls Brawl" started appearing everywhere in the mobile gaming world.
-      </p>
-      <p>
-        Another major reason for its popularity is <strong>early access content</strong>. Many users download Nulls Brawl to test upcoming brawlers and features before they officially release in Brawl Stars. This creates curiosity and keeps players connected to every new update.
-      </p>
+    <div class="feature-card">
+      <div class="feature-icon ic-blue">🗺️</div>
+      <div class="feature-title">Every Map Matters</div>
+      <div class="feature-desc">Snipers rule open lanes, tanks dominate choke points. Master the terrain and you master the fight.</div>
     </div>
-
-    <!-- MINDSET SHIFT -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">03 —</span>
-        <h2>How It Changed the Mindset of Mobile Gamers</h2>
-      </div>
-      <p>
-        One interesting thing about <a href="https://nulsbrawl.fr/" class="inline-link">Nulls Brawl</a> is how it changed player expectations in mobile gaming. Before private servers became popular, many gamers accepted slow progression as a normal part of online games. But Nulls Brawl showed players a different experience.
-      </p>
-      <p>
-        Gamers realized they enjoy creativity and experimentation more than endless grinding. Instead of spending weeks unlocking a single character, players could instantly test every brawler and focus on gameplay itself. This shifted the mindset of many users from "collecting resources" to actually enjoying battles and strategies.
-      </p>
-      <p>
-        For younger players especially, <strong>Nulls Brawl</strong> created a stress-free gaming environment. They no longer had to worry about losing trophies, purchasing gems, or waiting months for upgrades. The game became more about fun and less about pressure.
-      </p>
-
-      <div class="callout">
-        <p>"This mindset shift also influenced discussions in the gaming community. Players began expecting faster rewards, better customization, and more user-friendly systems in mobile games overall."</p>
-      </div>
+    <div class="feature-card">
+      <div class="feature-icon ic-green">🔄</div>
+      <div class="feature-title">Always Fresh</div>
+      <div class="feature-desc">Regular updates bring new brawlers, skins, events, and seasonal themes so there's always something new.</div>
     </div>
-
-    <div class="divider">Unlimited Features</div>
-
-    <!-- FEATURES -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">04 —</span>
-        <h2>Unlimited Gems &amp; Unlocked Features</h2>
-      </div>
-      <p>
-        One of the most searched terms online is <strong>"Nulls Brawl unlimited gems"</strong>, and there is a clear reason behind it. In most mobile games, premium currency controls progression. Players either grind for hours or spend money to access exclusive content. <a href="https://nulsbrawl.fr/" class="inline-link">Nulls Brawl</a> removes those restrictions entirely.
-      </p>
-
-      <div class="feature-grid">
-        <div class="feature-item">
-          <span class="feature-icon">💎</span>
-          <span class="feature-label">Premium Skins</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">⭐</span>
-          <span class="feature-label">Legendary Brawlers</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">🪙</span>
-          <span class="feature-label">Coins &amp; Gems</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">✨</span>
-          <span class="feature-label">Exclusive Effects</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">⚔️</span>
-          <span class="feature-label">Battle Customization</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">🔓</span>
-          <span class="feature-label">No Paywalls</span>
-        </div>
-      </div>
-
-      <p>
-        This unlimited access gives players complete control over how they want to enjoy the game — from cosmetics to competitive experimenting.
-      </p>
+    <div class="feature-card">
+      <div class="feature-icon ic-purple">🤝</div>
+      <div class="feature-title">Teamwork Wins</div>
+      <div class="feature-desc">Coordinate supers, cover teammates, and control the map. Great teams consistently outperform lone wolves.</div>
     </div>
-
-    <!-- CONTENT CREATORS -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">05 —</span>
-        <h2>The Role of Content Creators</h2>
-      </div>
-      <p>
-        YouTube creators and gaming influencers played a huge role in making <a href="https://nulsbrawl.fr/" class="inline-link">Nulls Brawl</a> famous. Gameplay showcases, update leaks, and "new brawler testing" videos quickly gained millions of views online.
-      </p>
-      <p>
-        Whenever a new version launches, creators rush to upload tutorials and first-look videos. This creates hype within the gaming community and increases searches for the latest <strong>Nulls Brawl APK</strong> version. TikTok clips and short gameplay edits also helped attract younger audiences — fast-paced battles, rare skins, and funny gameplay moments made the game highly shareable on social media platforms.
-      </p>
+    <div class="feature-card">
+      <div class="feature-icon ic-orange">🏆</div>
+      <div class="feature-title">Competitive Ranked</div>
+      <div class="feature-desc">Climb the ranked ladder and prove your skill. World-class tournaments draw top players globally.</div>
     </div>
+  </div>
+</section>
 
-    <div class="divider">Official vs Private</div>
-
-    <!-- COMPARISON -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">06 —</span>
-        <h2>Nulls Brawl vs Official Brawl Stars</h2>
-      </div>
-      <p>
-        Both experiences are very different by design. Here's how they compare:
-      </p>
-
-      <table class="compare-table">
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th>Nulls Brawl</th>
-            <th>Official Brawl Stars</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="label">Unlimited Gems</td>
-            <td><span class="badge badge-yes">Yes</span></td>
-            <td><span class="badge badge-no">No</span></td>
-          </tr>
-          <tr>
-            <td class="label">All Brawlers Unlocked</td>
-            <td><span class="badge badge-yes">Instant</span></td>
-            <td><span class="badge badge-ltd">Grind Required</span></td>
-          </tr>
-          <tr>
-            <td class="label">Early Access Content</td>
-            <td><span class="badge badge-yes">Yes</span></td>
-            <td><span class="badge badge-no">No</span></td>
-          </tr>
-          <tr>
-            <td class="label">Competitive Rankings</td>
-            <td><span class="badge badge-no">No</span></td>
-            <td><span class="badge badge-yes">Yes</span></td>
-          </tr>
-          <tr>
-            <td class="label">Official Supercell Support</td>
-            <td><span class="badge badge-no">No</span></td>
-            <td><span class="badge badge-yes">Yes</span></td>
-          </tr>
-          <tr>
-            <td class="label">Cross-Server Progress</td>
-            <td><span class="badge badge-no">Independent</span></td>
-            <td><span class="badge badge-yes">Synced</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <p>
-        Progress from <a href="https://nulsbrawl.fr/" class="inline-link">Nulls Brawl</a> does not transfer to the official game because it operates independently from Supercell servers. The official version focuses on progression and competitive gameplay — Nulls Brawl focuses on freedom and entertainment.
-      </p>
+<!-- BRAWLERS SECTION -->
+<section class="brawlers-section">
+  <div class="brawlers-inner">
+    <div class="section-label">The Roster</div>
+    <div class="section-heading">Pick Your Fighter</div>
+    <div class="brawler-cards">
+      <div class="brawler-card"><span class="brawler-emoji">🛡️</span><div class="brawler-name">Bull</div><span class="brawler-type type-tank">Tank</span><div class="brawler-bar"><div class="brawler-fill" style="width:90%"></div></div></div>
+      <div class="brawler-card"><span class="brawler-emoji">🎯</span><div class="brawler-name">Colt</div><span class="brawler-type type-sniper">Sniper</span><div class="brawler-bar"><div class="brawler-fill" style="width:70%"></div></div></div>
+      <div class="brawler-card"><span class="brawler-emoji">⚔️</span><div class="brawler-name">Leon</div><span class="brawler-type type-assassin">Assassin</span><div class="brawler-bar"><div class="brawler-fill" style="width:85%"></div></div></div>
+      <div class="brawler-card"><span class="brawler-emoji">💚</span><div class="brawler-name">Poco</div><span class="brawler-type type-support">Support</span><div class="brawler-bar"><div class="brawler-fill" style="width:65%"></div></div></div>
+      <div class="brawler-card"><span class="brawler-emoji">🔥</span><div class="brawler-name">Amber</div><span class="brawler-type type-fighter">Fighter</span><div class="brawler-bar"><div class="brawler-fill" style="width:80%"></div></div></div>
+      <div class="brawler-card"><span class="brawler-emoji">⚡</span><div class="brawler-name">Surge</div><span class="brawler-type type-fighter">Fighter</span><div class="brawler-bar"><div class="brawler-fill" style="width:75%"></div></div></div>
+      <div class="brawler-card"><span class="brawler-emoji">🧊</span><div class="brawler-name">Bea</div><span class="brawler-type type-sniper">Sniper</span><div class="brawler-bar"><div class="brawler-fill" style="width:68%"></div></div></div>
     </div>
+  </div>
+</section>
 
-    <!-- 2026 SECTION -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">07 —</span>
-        <h2>Why Gamers Still Love Nulls Brawl in 2026</h2>
-      </div>
-      <p>
-        Even in 2026, the popularity of <a href="https://nulsbrawl.fr/" class="inline-link">Nulls Brawl</a> continues growing because players still enjoy unrestricted gaming experiences. Modern gamers want instant action, quick rewards, and full customization options. Nulls Brawl provides exactly that experience.
-      </p>
-      <p>
-        The developers also keep updating the server regularly with new brawlers, skins, and gameplay improvements. This keeps the community active and engaged throughout the year.
-      </p>
-
-      <div class="callout">
-        <p>"Nulls Brawl became more than just a private server because it changed how people think about mobile gaming. It showed players that games can be fun without heavy grinding or constant spending."</p>
-      </div>
-    </div>
-
-    <!-- CTA -->
-    <div class="cta-banner section">
-      <div class="cta-glow"></div>
-      <div class="cta-label">Ready to Play?</div>
-      <h3>Experience Total<br>Gaming Freedom</h3>
-      <a href="https://nulsbrawl.fr/" class="cta-btn" target="_blank" rel="noopener">
-        Visit Nulls Brawl
-        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-    </div>
-
-  </div><!-- /container -->
-</main>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-brand">Nulls Brawl</div>
-  <div class="footer-note">© 2026 · nulsbrawl.fr · Mobile Gaming Analysis</div>
-</footer>
-
-<script>
-  // Scroll-triggered section reveal
-  const sections = document.querySelectorAll('.section');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  sections.forEach(s => io.observe(s));
-</script>
-</body>
-</html>
+<!-- MODES SECTION -->
+<section class="modes-section">
+  <div class="section-label">Battle Modes</div>
+  <div class="section-heading">Multiple Ways<br>To Win</div>
+  <div class="modes-grid">
+    <div class="mode-card featured"><span class="mode-card-icon">☠️</span><span class="mode-tag tag-white">Battle Royale</span><div class="mode-card-name">Showdown</div><div class="mode-card-desc">Solo or duo — fight until one player stands. The shrinking zone forces
